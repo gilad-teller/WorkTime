@@ -1,0 +1,11 @@
+﻿@model CalendarModel
+@{
+    ViewData["Title"] = Model.Job.Name;
+}
+<div class="btn-group btn-group-lg" role="group">
+    <a class="btn btn-secondary" asp-controller="Job" asp-action="Calendar" asp-route-month="@Model.Month.AddMonths(-1).ToString("yyyy-MM-ddTHH:mm")" asp-route-jobId="@Model.Job.JobId">Previous</a>
+    <a class="btn btn-outline-secondary" disabled>@Model.Month.ToString("MMMM yyyy")</a>
+    <a class="btn btn-secondary" asp-controller="Job" asp-action="Calendar" asp-route-month="@Model.Month.AddMonths(1).ToString("yyyy-MM-ddTHH:mm")" asp-route-jobId="@Model.Job.JobId">Next</a>
+</div>
+<hr class="my-4" />
+<partial name="_Month" model="new MonthModel(Model.Month, Model.Job)" />

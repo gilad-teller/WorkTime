@@ -1,0 +1,23 @@
+﻿@using WorkTimeLogic.Models
+@model MonthModel
+<table class="table-bordered table-sm">
+    <thead>
+        <tr>
+            @foreach (DayOfWeek day in Model.DaysOfWeek)
+            {
+                <th scope="col">@day.ToString()</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (IEnumerable<DayModel> week in Model.Dates)
+        {
+            <tr>
+                @foreach (DayModel day in week)
+                {
+                    <partial name="_Day" model="day"/>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

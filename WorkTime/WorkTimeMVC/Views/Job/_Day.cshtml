@@ -1,0 +1,19 @@
+﻿@using WorkTimeLogic.Models
+@model DayModel
+<td>
+    <div class="@Model.DayTypeClass">
+        <div class="card-header">@Model.Date.ToString("dd/MM/yyyy")</div>
+        <div class="card-body">
+            <h6 class="card-title">@Model.DayTypeDescription</h6>
+            @if (Model.ShiftId != Guid.Empty)
+            {
+                <p class="card-text" data-toggle="modal" data-target="#shiftModal-@Model.Date.ToString("ddMMyyyy")">@Model.StartTime.ToString("HH:mm") - @Model.EndTime.ToString("HH:mm")</p>
+            }
+            else
+            {
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#shiftModal-@Model.Date.ToString("ddMMyyyy")">Add Shift</button>
+            }
+            <partial name="_DayForm" model="Model"/>
+        </div>
+    </div>
+</td>

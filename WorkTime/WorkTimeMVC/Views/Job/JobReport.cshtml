@@ -1,0 +1,42 @@
+﻿@using WorkTimeCommon
+@using WorkTimeMVC.Models
+@model JobReportModel
+@{
+    ViewData["Title"] = $"{Model.JobReport.JobName} - {Model.JobReport.ReportName}";
+}
+<table class="table">
+    <tbody>
+        <tr>
+            <th scope="row">Total Shifts</th>
+            <td>@Model.JobReport.TotalShifts.ToHoursAndMinutes()</td>
+        </tr>
+        <tr>
+            <th scope="row">Total Time Needed</th>
+            <td>@Model.JobReport.TotalTimeNeeded.ToHoursAndMinutes()</td>
+        </tr>
+        <tr>
+            <th scope="row">Full Days Remaining</th>
+            <td>@Model.JobReport.FullDaysRemaining</td>
+        </tr>
+        <tr>
+            <th scope="row">Half Days Remaining</th>
+            <td>@Model.JobReport.HalfDaysRemaining</td>
+        </tr>
+        <tr>
+            <th scope="row">Estimated Time At End Of Period</th>
+            <td>@Model.JobReport.EstimatedTimeAtEndOfPeriod.ToHoursAndMinutes()</td>
+        </tr>
+        <tr>
+            <th scope="row">Total Time Remaining</th>
+            <td>@Model.JobReport.TotalTimeRemaining.ToHoursAndMinutes()</td>
+        </tr>
+        <tr>
+            <th scope="row">Time Per Day Needed</th>
+            <td>@Model.JobReport.TimePerDayNeeded.ToHoursAndMinutes()</td>
+        </tr>
+        <tr>
+            <th scope="row">Time Per Day Needed No Half Days</th>
+            <td>@Model.JobReport.TimePerDayNeededNoHalfDays.ToHoursAndMinutes()</td>
+        </tr>
+    </tbody>
+</table>

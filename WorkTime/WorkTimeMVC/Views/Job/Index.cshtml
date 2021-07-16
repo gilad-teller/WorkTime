@@ -1,0 +1,59 @@
+﻿@using WorkTimeLogic.Models
+@model JobModel
+@{
+    ViewData["Title"] = Model.Job?.Name ?? "New Job";
+}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">@ViewData["Title"]</h1>
+        <hr class="my-4" />
+        <form asp-controller="Job" asp-action="SaveJob" method="post">
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" name="name" value="@Model.Job?.Name" />
+            </div>
+            <div class="form-group">
+                @foreach (DayOfWeek dow in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
+                {
+                    @if (Model.Job != null && Model.Job.WeekendDays.Contains(dow))
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="dow-@dow" name="dow-@dow" value="@dow" checked>
+                            <label class="form-check-label" for="dow-@dow">@dow</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="dow-@dow" name="dow-@dow" value="@dow">
+                            <label class="form-check-label" for="dow-@dow">@dow</label>
+                        </div>
+                    }
+                }
+            </div>
+            <div class="form-group">
+                <input type="hidden" value="@Model.Job?.JobId" name="jobId" />
+                <button type="submit" class="btn btn-primary">Save</button>
+            </div>
+        </form>
+        @if (Model.Job != null)
+        {
+            <hr class="my-4" />
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" data-toggle="modal" data-target="#shiftModal-@DateTime.Now.ToString("ddMMyyyy")">Add Shift</a>
+                <a class="list-group-item list-group-item-action" asp-controller="Job" asp-action="Calendar" asp-route-month="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")" asp-route-jobId="@Model.Job.JobId">Calendar</a>
+            </div>
+            <partial name="_DayForm" model="new DayModel(Model.Job, DateTime.Now)" />
+        }
+        @if (Model.Job != null && Model.Reports != null && Model.Reports.Any())
+        {
+            <hr class="my-4" />
+            <div class="list-group">
+                @foreach (ReportDto r in Model.Reports)
+                {
+                    <a class="list-group-item list-group-item-action" asp-controller="Job" asp-action="JobReport" asp-route-jobId="@Model.Job.JobId" asp-route-reportId="@r.ReportId">@r.ToString()</a>
+                }
+            </div>
+        }
+    </div>
+</div>

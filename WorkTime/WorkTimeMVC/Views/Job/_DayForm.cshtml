@@ -1,0 +1,52 @@
+﻿@using WorkTimeLogic.Models
+@model DayModel
+<form asp-controller="Job" asp-action="SaveDay" method="post">
+    <div class="modal fade" id="shiftModal-@Model.Date.ToString("ddMMyyyy")" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Shift - @Model.Date.ToString("dd/MM/yyyy")</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="dayType">Day Type</label>
+                        <select class="custom-select" name="dayType">
+                            @foreach (DayType dayType in DayModel.DayTypesForSelection)
+                            {
+                                if (dayType == Model.DayType)
+                                {
+                                    <option value="@dayType" selected>@DayModel.DayTypeDescriptions[dayType]</option>
+                                }
+                                else
+                                {
+                                    <option value="@dayType">@DayModel.DayTypeDescriptions[dayType]</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date</label>
+                        <input type="date" class="form-control" name="date" value="@Model.Date.ToString("yyyy-MM-dd")" />
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime">Start</label>
+                        <input type="time" class="form-control" name="startTime" value="@Model.StartTime.ToString("HH:mm")" />
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">End</label>
+                        <input type="time" class="form-control" name="endTime" value="@Model.EndTime.ToString("HH:mm")" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" value="@Model.ShiftId" name="shiftId" />
+                    <input type="hidden" value="@Model.JobId" name="jobId" />
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
