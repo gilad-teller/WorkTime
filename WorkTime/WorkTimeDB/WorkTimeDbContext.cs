@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using WorkTimeCommon;
@@ -12,9 +13,15 @@ namespace WorkTimeDB
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<Report> Reports { get; set; }
 
-        public WorkTimeDbContext(DbContextOptions<WorkTimeDbContext> options) : base(options)
+        private readonly ILogger<WorkTimeDbContext> _logger;
+
+        public WorkTimeDbContext(DbContextOptions<WorkTimeDbContext> options, ILogger<WorkTimeDbContext> logger) : base(options)
         {
-            Database.EnsureCreated();
+            _logger = logger;
+            Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal.SqliteOptionsExtension sqliteExtension = options.FindExtension<Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal.SqliteOptionsExtension>();
+            _logger.LogDebug($"Connection string: {sqliteExtension.ConnectionString}");
+            bool dbCreated = Database.EnsureCreated();
+            logger.LogDebug($"DB created: {dbCreated}");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
