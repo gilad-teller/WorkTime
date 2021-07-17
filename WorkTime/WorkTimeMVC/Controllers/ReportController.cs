@@ -42,11 +42,13 @@ namespace WorkTimeMVC.Controllers
             if (reportId == Guid.Empty)
             {
                 reportId = await _reportsService.AddReport(report);
+                _logger.LogDebug($"New report: {reportId}");
             }
             else
             {
                 report.ReportId = reportId;
                 await _reportsService.UpdateReport(report);
+                _logger.LogDebug($"Updated report: {reportId}");
             }
             return RedirectToAction("Index", new { reportId });
         }

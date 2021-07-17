@@ -71,11 +71,13 @@ namespace WorkTimeMVC.Controllers
             if (jobId == Guid.Empty)
             {
                 jobId = await _jobService.TryAddJob(job);
+                _logger.LogDebug($"New job: {jobId} - {name}");
             }
             else
             {
                 job.JobId = jobId;
                 await _jobService.TryUpdateJob(job);
+                _logger.LogDebug($"Updated job: {jobId} - {name}");
             }
             return RedirectToAction("Index", new { jobId });
         }
@@ -90,20 +92,24 @@ namespace WorkTimeMVC.Controllers
                 {
                     ShiftDto shiftDto = new(startDateTime, endDateTime);
                     await _jobService.TryAddShift(jobId, shiftDto);
+                    _logger.LogDebug($"New shift: {jobId} - {startDateTime} - {endDateTime}");
                 }
                 else
                 {
                     ShiftDto shiftDto = new(shiftId, startDateTime, endDateTime);
                     await _jobService.TryUpdateShift(shiftDto);
+                    _logger.LogDebug($"Updated shift: {jobId} - {startDateTime} - {endDateTime}");
                 }
             }
             if (dayType == DayType.OffDay)
             {
                 await _jobService.TryAddOffDay(jobId, date);
+                _logger.LogDebug($"Off day: {jobId} - {date}");
             }
             if (dayType == DayType.HalfDay)
             {
                 await _jobService.TryAddHalfDay(jobId, date);
+                _logger.LogDebug($"Half day: {jobId} - {date}");
             }
             return RedirectToAction("Calendar", new { month = date, jobId });
         }
